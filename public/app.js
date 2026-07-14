@@ -16,14 +16,13 @@
   const BASE_PATH = (() => {
     // Get the directory of the current page
     const path = window.location.pathname;
-    const dir = path.substring(0, path.lastIndexOf('/') + 1);
-    return dir;
+    return path.endsWith('/') ? path : path.substring(0, path.lastIndexOf('/') + 1);
   })();
 
   // ---- Configuration ----
   const CONFIG = {
-    PDF_PATH: BASE_PATH + 'pdfs/',
-    STUDENTS_PATH: BASE_PATH + 'students.json',
+    PDF_PATH: new URL('pdfs/', window.location.href).toString(),
+    STUDENTS_PATH: new URL('students.json', window.location.href).toString(),
     SEARCH_DEBOUNCE: 200,
     MAX_SUGGESTIONS: 8,
     MAX_RECENT: 5,
@@ -420,7 +419,7 @@
       dom.noResults.style.display = 'none';
       dom.sectionsGrid.style.display = '';
       dom.sectionsHeader.style.display = '';
-      
+
       // Highlight matching cards
       document.querySelectorAll('.section-card').forEach(card => {
         const section = card.getAttribute('data-section');
@@ -494,8 +493,8 @@
     dom.searchSuggestions.innerHTML = suggestions.map((s, i) => `
       <div class="suggestion-item" data-index="${i}" data-section="${s.section}" data-type="${s.type}" data-name="${s.name}">
         <div class="suggestion-icon ${s.type}">
-          ${s.type === 'section' 
-            ? s.name.replace('CS', '') 
+          ${s.type === 'section'
+            ? s.name.replace('CS', '')
             : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
           }
         </div>
@@ -608,10 +607,10 @@
       canvas.id = `pdf-page-${i}`;
       canvas.width = viewport.width;
       canvas.height = viewport.height;
-      
+
       const ctx = canvas.getContext('2d');
       await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-      
+
       dom.pdfCanvasWrapper.appendChild(canvas);
     }
   }
@@ -686,8 +685,12 @@
   function downloadPdf(url, filename) {
     const link = document.createElement('a');
     link.href = url;
-    link.download = filename;
+    link.download = filename || '';
+    link.target = '_blank';
+    link.rel = 'noopener';
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
     showToast(`📥 Downloading ${filename}`, 'success');
   }
 
@@ -752,7 +755,7 @@
     const iconMap = {
       success: `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
       error: `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
-      info: `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+      info: `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`
     };
 
     const toast = document.createElement('div');
@@ -1023,7 +1026,7 @@
       if (!state.pdfDoc) return;
       const container = dom.pdfViewerContainer;
       const scrollTop = container.scrollTop;
-      
+
       for (let i = 1; i <= state.pdfTotalPages; i++) {
         const canvas = document.getElementById(`pdf-page-${i}`);
         if (!canvas) continue;
