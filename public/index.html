@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIIT CSE 3rd Semester Student Section Finder</title>
+  <meta name="description" content="Find your KIIT CSE 3rd Semester section, preview student lists online, download PDFs, and share them instantly.">
+  <meta name="keywords" content="KIIT, CSE, 3rd Semester, Section Finder, Student List, PDF">
+  <meta name="author" content="KIIT University">
+  <meta name="theme-color" content="#0056D2">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="KIIT CSE 3rd Semester Student Section Finder">
+  <meta property="og:description" content="Find your KIIT CSE 3rd Semester section, preview student lists online, download PDFs, and share them instantly.">
+  <meta property="og:type" content="website">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- PDF.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon (inline SVG as data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230056D2'/><text x='50' y='68' font-family='Arial' font-size='50' font-weight='bold' fill='white' text-anchor='middle'>K</text></svg>">
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <div class="header-brand">
+        <div class="brand-logo">K</div>
+        <div class="brand-text">
+          <span class="university">KIIT University</span>
+          <span class="subtitle">CSE 3rd Semester · Section Portal</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Keyboard shortcuts -->
+        <button class="btn-icon" id="shortcutsBtn" title="Keyboard Shortcuts (?)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/>
+          </svg>
+        </button>
+        <!-- Theme toggle -->
+        <button class="btn-icon theme-toggle" id="themeToggle" title="Toggle Dark Mode (D)">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section class="hero-bg">
+    <div class="hero-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <div class="hero container">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        2025-26 Academic Year
+      </div>
+      <h1>KIIT CSE 3rd Semester</h1>
+      <h2>Student Section Finder</h2>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="number" id="totalSections">49</span>
+          <span class="label">Sections</span>
+        </div>
+        <div class="hero-stat">
+          <span class="number" id="totalStudents">3291</span>
+          <span class="label">Students</span>
+        </div>
+        <div class="hero-stat">
+          <span class="number" id="totalPdfs">49</span>
+          <span class="label">PDFs</span>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput"
+            placeholder="Search by Section, Roll Number or Student Name..."
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button class="search-clear" id="searchClear" title="Clear Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <!-- Search Suggestions -->
+        <div class="search-suggestions" id="searchSuggestions"></div>
+      </div>
+
+      <!-- Quick Jump Filters -->
+      <div class="quick-filters">
+        <div class="filter-row" id="quickJump">
+          <button class="filter-chip active" data-range="all">All</button>
+          <button class="filter-chip" data-range="1-10">CS1-10</button>
+          <button class="filter-chip" data-range="11-20">CS11-20</button>
+          <button class="filter-chip" data-range="21-30">CS21-30</button>
+          <button class="filter-chip" data-range="31-40">CS31-40</button>
+          <button class="filter-chip" data-range="41-49">CS41-49</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="container" id="mainContent">
+    <!-- Favorites -->
+    <div class="favorites-section" id="favoritesSection">
+      <div class="favorites-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        <span>Favorites</span>
+      </div>
+      <div class="favorites-grid" id="favoritesGrid"></div>
+    </div>
+
+    <!-- Recent -->
+    <div class="recent-section" id="recentSection">
+      <div class="recent-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>Recently Viewed</span>
+      </div>
+      <div class="recent-grid" id="recentGrid"></div>
+    </div>
+
+    <!-- Student Results (shown during search) -->
+    <div class="student-results" id="studentResults" style="display:none;"></div>
+
+    <!-- Sections Header -->
+    <div class="sections-header" id="sectionsHeader">
+      <h2 class="sections-title">All Sections</h2>
+      <span class="sections-count" id="sectionsCount">49 sections</span>
+    </div>
+
+    <!-- Section Cards Grid -->
+    <div class="sections-grid" id="sectionsGrid">
+      <!-- Cards generated by JS -->
+    </div>
+
+    <!-- No Results -->
+    <div class="no-results" id="noResults" style="display:none;">
+      <div class="no-results-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>
+        </svg>
+      </div>
+      <h3>No results found</h3>
+      <p>Try searching with a different section name, student name, or roll number.</p>
+    </div>
+  </main>
+
+  <!-- ========== PDF VIEWER MODAL ========== -->
+  <div class="pdf-modal-overlay" id="pdfOverlay"></div>
+  <div class="pdf-modal" id="pdfModal">
+    <div class="pdf-toolbar">
+      <div class="pdf-toolbar-left">
+        <span class="pdf-title" id="pdfTitle">Loading...</span>
+      </div>
+      <div class="pdf-toolbar-center">
+        <button class="pdf-toolbar-btn" id="pdfPrev" title="Previous Page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <span class="pdf-page-info" id="pdfPageInfo">Page 1 / 1</span>
+        <button class="pdf-toolbar-btn" id="pdfNext" title="Next Page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+        <div style="width:1px;height:20px;background:rgba(255,255,255,0.2);margin:0 4px;"></div>
+        <button class="pdf-toolbar-btn" id="pdfZoomOut" title="Zoom Out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </button>
+        <button class="pdf-toolbar-btn" id="pdfZoomIn" title="Zoom In">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </button>
+      </div>
+      <div class="pdf-toolbar-right">
+        <button class="pdf-toolbar-btn" id="pdfDownload" title="Download PDF">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+        <button class="pdf-toolbar-btn" id="pdfPrint" title="Print PDF">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+          </svg>
+        </button>
+        <button class="pdf-toolbar-btn" id="pdfFullscreen" title="Fullscreen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+          </svg>
+        </button>
+        <button class="pdf-close-btn" id="pdfClose" title="Close (Esc)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="pdf-viewer-container" id="pdfViewerContainer">
+      <div class="pdf-loading" id="pdfLoading">
+        <div class="spinner"></div>
+        <p>Loading PDF...</p>
+        <div class="pdf-progress-bar">
+          <div class="pdf-progress-fill" id="pdfProgressFill"></div>
+        </div>
+      </div>
+      <div class="pdf-canvas-wrapper" id="pdfCanvasWrapper" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- ========== KEYBOARD SHORTCUTS MODAL ========== -->
+  <div class="shortcuts-modal-overlay" id="shortcutsOverlay"></div>
+  <div class="shortcuts-modal" id="shortcutsModal">
+    <div class="shortcuts-title">
+      <span>Keyboard Shortcuts</span>
+      <button class="btn-icon" id="shortcutsClose">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">Focus Search</span>
+      <span class="shortcut-key"><kbd>/</kbd> or <kbd>Ctrl</kbd>+<kbd>K</kbd></span>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">Toggle Dark Mode</span>
+      <span class="shortcut-key"><kbd>D</kbd></span>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">Close Modal</span>
+      <span class="shortcut-key"><kbd>Esc</kbd></span>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">Show Shortcuts</span>
+      <span class="shortcut-key"><kbd>?</kbd></span>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">Scroll to Top</span>
+      <span class="shortcut-key"><kbd>T</kbd></span>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">PDF: Previous Page</span>
+      <span class="shortcut-key"><kbd>←</kbd></span>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">PDF: Next Page</span>
+      <span class="shortcut-key"><kbd>→</kbd></span>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">PDF: Zoom In</span>
+      <span class="shortcut-key"><kbd>+</kbd></span>
+    </div>
+    <div class="shortcut-row">
+      <span class="shortcut-label">PDF: Zoom Out</span>
+      <span class="shortcut-key"><kbd>-</kbd></span>
+    </div>
+  </div>
+
+  <!-- ========== SCROLL TO TOP ========== -->
+  <button class="scroll-top" id="scrollTop" title="Scroll to Top (T)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <!-- ========== TOAST CONTAINER ========== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="brand-logo" style="width:32px;height:32px;font-size:13px;">K</div>
+        KIIT Section Finder
+      </div>
+      <p class="footer-text">
+        Quickly find your section, preview student lists, download PDFs, and share them with classmates. 
+        Built for KIIT CSE 3rd Semester students.
+      </p>
+      <div class="footer-links">
+        <a href="https://kiit.ac.in" target="_blank" rel="noopener">KIIT Website</a>
+        <a href="#" id="footerShortcuts">Keyboard Shortcuts</a>
+      </div>
+      <p class="footer-copyright">&copy; 2025 KIIT University. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ========== MAIN SCRIPT ========== -->
+  <script src="app.js"></script>
+</body>
+</html>
